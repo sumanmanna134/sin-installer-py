@@ -1,0 +1,36 @@
+services:
+  mysql:
+    repo_url: https://github.com/yourusername/mysql-docker-repo
+    compose_file: mysql-compose.yml
+    service_name: mysql
+    port_key: '3306'
+    uri_format: 'mysql://{user}:{password}@{host}:{port}/{database}'
+    env_vars:
+      user: MYSQL_USER
+      password: MYSQL_PASSWORD
+      database: MYSQL_DATABASE
+    defaults:
+      user: root
+      password: password
+      database: mydb
+      port: '3306'
+    health_check:
+      command: 'mysqladmin ping -h localhost -u {user} -p{password}'
+      interval: '5'
+      retries: '6'
+  kafka:
+    repo_url: https://github.com/yourusername/kafka-docker-repo
+    compose_file: kafka-compose.yml
+    service_name: kafka
+    port_key: '9092'
+    uri_format: 'kafka://{host}:{port}'
+    env_vars:
+      user: null
+      password: null
+      database: null
+    defaults:
+      port: '9092'
+    health_check:
+      command: 'kafka-topics.sh --list --bootstrap-server localhost:9092'
+      interval: '5'
+      retries: '6'
